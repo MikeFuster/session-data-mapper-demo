@@ -2,7 +2,7 @@ import React from 'react';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { rankWith, ControlProps, JsonSchema, and, uiTypeIs } from '@jsonforms/core';
 import Row from './Row';
-import { Typography } from "@material-ui/core";
+import { Typography } from '@material-ui/core';
 
 interface Enum {
   value: string;
@@ -38,10 +38,10 @@ const MappingRendererControlVanillaRenderer = ({ data, handleChange, path, ...pr
   return (
     <div style={{ width: '1100px', margin: '0 auto' }}>
       <div style={{ display: 'flex' }}>
-        <Typography variant="h5" style={{ margin: "16px auto 16px 0" }}>
+        <Typography variant="h5" style={{ margin: '16px auto 16px 0' }}>
           {schema.items.properties.source.title}
         </Typography>
-        <Typography variant="h5" style={{ margin: "16px 0" }}>
+        <Typography variant="h5" style={{ margin: '16px 0' }}>
           {schema.items.properties.target.title}
         </Typography>
       </div>

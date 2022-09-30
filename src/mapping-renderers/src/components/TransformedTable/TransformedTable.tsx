@@ -24,9 +24,7 @@ const TransformedTableVanillaRenderer = ({ data }: ControlProps) => {
               <TableHead>
                 <TableRow>
                   {Object.keys(dot.dot(tranformedTable)).map((val) => (
-                    <TableCell style={{ fontWeight: 600 }} key={val}>
-                      {val}
-                    </TableCell>
+                    <TableCell key={val}>{val}</TableCell>
                   ))}
                 </TableRow>
               </TableHead>

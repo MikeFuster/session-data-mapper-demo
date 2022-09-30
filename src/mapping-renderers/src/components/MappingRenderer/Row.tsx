@@ -19,12 +19,11 @@ const Row = ({ source, targetEnum, onChange }: Props) => {
     <div style={{ display: 'flex', marginBottom: '20px' }}>
       <TextField
         label={source?.label || source.value}
-        variant="outlined"
         aria-readonly="true"
         disabled
-        style={{ marginRight: '40px', width: '100%' }}
+        style={{ marginRight: '40px', width: '100%', border: 'none' }}
       />
-      <FormControl variant="outlined" style={{ width: '100%' }}>
+      <FormControl style={{ width: '100%' }}>
         <InputLabel>Select a Property</InputLabel>
         <Select
           label="Select a Property"

@@ -19,9 +19,7 @@ const SourceTableVanillaRenderer = ({ data }: ControlProps) => {
           <TableHead>
             <TableRow>
               {Object.keys(baseTable).map((val) => (
-                <TableCell style={{ fontWeight: 600 }} key={val}>
-                  {val}
-                </TableCell>
+                <TableCell key={val}>{val}</TableCell>
               ))}
             </TableRow>
           </TableHead>

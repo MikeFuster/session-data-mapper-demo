@@ -39,7 +39,7 @@ export default [
         'process.env.NODE_ENV': JSON.stringify('production'),
         preventAssignment: true,
       }),
-      typescript({ tsconfig: './tsconfig.json' }),
+      typescript({ tsconfig: '../../tsconfig.json' }),
       terser(),
     ],
   },

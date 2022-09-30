@@ -3,7 +3,7 @@ import { useJsonForms, withJsonFormsControlProps } from '@jsonforms/react';
 import { rankWith, ControlProps, and, uiTypeIs } from '@jsonforms/core';
 import { Table, TableBody, TableCell, TableRow, TableHead, TableContainer, Paper, Typography } from '@material-ui/core';
 import dot from 'dot-object';
-import {sessionDataMapper} from "../../../../data-mapper/src";
+import { sessionDataMapper } from 'session-data-mapper';
 
 const TransformedTableVanillaRenderer = ({ data }: ControlProps) => {
   const ctx = useJsonForms();
@@ -16,10 +16,7 @@ const TransformedTableVanillaRenderer = ({ data }: ControlProps) => {
     <div style={{ width: '1100px', margin: '0 auto' }}>
       {Object.keys(tranformedTable || []).length > 0 && (
         <>
-          <Typography
-            variant="h5"
-            style={{ width: "max-content", margin: "16px 0" }}
-          >
+          <Typography variant="h5" style={{ width: 'max-content', margin: '16px 0' }}>
             Transformed Data
           </Typography>
           <TableContainer component={Paper}>

@@ -25,7 +25,7 @@ export default [
     ],
     plugins: [
       peerDepsExternal(),
-      resolve({ browser: 'true' }),
+      resolve(),
       json(),
       commonjs(),
       replace({

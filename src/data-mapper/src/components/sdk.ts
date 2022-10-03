@@ -1,9 +1,14 @@
 import dot from 'dot-object';
 
+const getKeyWithoutLastElement = (key: string) => {
+  const splittedKey = key.split('.');
+  const keyWithoutLastElement = splittedKey.slice(0, splittedKey.length - 1).join('.');
+  return keyWithoutLastElement;
+};
+
 const parseKey = (key: string) => {
   const keyWithoutProperties = key.split('properties.').join('');
-  const splittedKey = keyWithoutProperties.split('.');
-  const objectKey = splittedKey.slice(0, splittedKey.length - 1).join('.');
+  const objectKey = getKeyWithoutLastElement(keyWithoutProperties);
   return objectKey;
 };
 
@@ -12,8 +17,7 @@ const generateEnum = (schema: any) => {
 
   Object.keys(dot.dot(schema.properties)).forEach((key) => {
     const value = parseKey(key);
-    const splittedKey = key.split('.');
-    const baseKey = splittedKey.slice(0, splittedKey.length - 1).join('.');
+    const baseKey = getKeyWithoutLastElement(key);
     const objectProperties = dot.pick(baseKey, schema.properties);
     const baseObject = { value, ...objectProperties };
     const isEnumIncluded = schemaEnum.find((val: any) => val.value === value);

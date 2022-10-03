@@ -1,5 +1,5 @@
 {
-  "name": "@fusebit/mapping-renderer",
+  "name": "@fusebit/jsonforms-mapping-renderers",
   "version": "1.0.0",
   "description": "",
   "scripts": {

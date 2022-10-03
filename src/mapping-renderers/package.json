@@ -1,6 +1,6 @@
 {
-  "name": "mapping-renderer",
-  "version": "1.0.17",
+  "name": "@fusebit/mapping-renderer",
+  "version": "1.0.0",
   "description": "",
   "scripts": {
     "rollup": "rollup -c",

@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { useJsonForms, withJsonFormsControlProps } from '@jsonforms/react';
 import { rankWith, ControlProps, and, uiTypeIs } from '@jsonforms/core';
 import { Table, TableBody, TableCell, TableRow, TableHead, TableContainer, Paper, Typography } from '@material-ui/core';
-import dot from 'dot-object';
 import { sessionDataMapper } from 'session-data-mapper';
 
 const TransformedTableVanillaRenderer = ({ data }: ControlProps) => {
@@ -13,25 +12,25 @@ const TransformedTableVanillaRenderer = ({ data }: ControlProps) => {
   }, [ctx.core.data, data]);
 
   return (
-    <div style={{ width: '1100px', margin: '0 auto' }}>
+    <div>
       {Object.keys(tranformedTable || []).length > 0 && (
         <>
           <Typography variant="h5" style={{ width: 'max-content', margin: '16px 0' }}>
             Transformed Data
           </Typography>
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} style={{ marginBottom: '16px' }}>
             <Table>
               <TableHead>
                 <TableRow>
-                  {Object.keys(dot.dot(tranformedTable)).map((val) => (
+                  {Object.keys(tranformedTable).map((val) => (
                     <TableCell key={val}>{val}</TableCell>
                   ))}
                 </TableRow>
               </TableHead>
               <TableBody>
                 <TableRow>
-                  {Object.keys(dot.dot(tranformedTable)).map((val) => (
-                    <TableCell key={val}>{JSON.stringify(dot.pick(val, tranformedTable))}</TableCell>
+                  {Object.keys(tranformedTable).map((val) => (
+                    <TableCell key={val}>{tranformedTable[val]}</TableCell>
                   ))}
                 </TableRow>
               </TableBody>

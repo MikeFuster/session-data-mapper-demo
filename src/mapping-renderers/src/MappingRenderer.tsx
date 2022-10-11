@@ -7,6 +7,7 @@ import { Typography } from '@material-ui/core';
 interface Enum {
   value: string;
   label?: string;
+  type: string;
 }
 
 type CustomProps = {
@@ -29,32 +30,38 @@ type JsonSchemaWithCustomProps = JsonSchema & CustomProps;
 const MappingRendererControlVanillaRenderer = ({ data, handleChange, path, ...props }: ControlProps) => {
   const schema = props.schema as JsonSchemaWithCustomProps;
 
-  const handleRowChange = (sourceValue: string, target: Enum) => {
-    const i = data.findIndex((row: any) => row.source.value === sourceValue);
-    data[i] = { ...data[i], target };
+  const handleRowChange = (targetValue: string, source: Enum) => {
+    const i = data.findIndex((row: any) => row.target.value === targetValue);
+
+    if (source.type === 'clearable') {
+      data[i] = { target: data[i].target };
+    } else {
+      data[i] = { target: data[i].target, source };
+    }
+
     handleChange(path, data);
   };
 
   return (
-    <div style={{ width: '1100px', margin: '0 auto' }}>
+    <div>
       <div style={{ display: 'flex' }}>
         <Typography variant="h5" style={{ margin: '16px auto 16px 0' }}>
-          {schema.items.properties.source.title}
-        </Typography>
-        <Typography variant="h5" style={{ margin: '16px 0' }}>
           {schema.items.properties.target.title}
         </Typography>
+        <Typography variant="h5" style={{ margin: '16px 0' }}>
+          {schema.items.properties.source.title}
+        </Typography>
       </div>
-      {schema.items.properties.source.enum.map((e: any) => {
+      {schema.items.properties.target.enum.map((e: any) => {
         return (
-          <Row key={e.value} source={e} targetEnum={schema.items.properties.target.enum} onChange={handleRowChange} />
+          <Row key={e.value} target={e} sourceEnum={schema.items.properties.source.enum} onChange={handleRowChange} />
         );
       })}
     </div>
   );
 };
 
-const MappingRendererControlTester = rankWith(3, and(uiTypeIs('Dynamic')));
+const MappingRendererControlTester = rankWith(3, and(uiTypeIs('ObjectMap')));
 const MappingRendererControlRenderer = withJsonFormsControlProps(MappingRendererControlVanillaRenderer);
 
 const MappingRendererControl = {

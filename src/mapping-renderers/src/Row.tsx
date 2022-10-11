@@ -4,24 +4,29 @@ import { FormControl, InputLabel, MenuItem, Select, TextField } from '@material-
 interface Enum {
   value: string;
   label?: string;
+  type: string;
 }
 
 interface Props {
-  source: Enum;
-  targetEnum: Enum[];
+  target: Enum;
+  sourceEnum: Enum[];
   onChange: (source: string, target: Enum) => void;
 }
 
-const Row = ({ source, targetEnum, onChange }: Props) => {
+const Row = ({ target, sourceEnum, onChange }: Props) => {
   const [targetValue, setTargetValue] = useState<string>('');
 
   return (
     <div style={{ display: 'flex', marginBottom: '20px' }}>
       <TextField
-        label={source?.label || source.value}
+        label={target?.label || target.value}
         aria-readonly="true"
         disabled
-        style={{ marginRight: '40px', width: '100%', border: 'none' }}
+        style={{
+          marginRight: '40px',
+          width: '100%',
+          border: 'none',
+        }}
       />
       <FormControl style={{ width: '100%' }}>
         <InputLabel>Select a Property</InputLabel>
@@ -29,15 +34,22 @@ const Row = ({ source, targetEnum, onChange }: Props) => {
           label="Select a Property"
           value={targetValue}
           onChange={(e: any) => {
-            setTargetValue(e.target.value);
-            const target = targetEnum.find((val) => val.value === e.target.value);
+            const source = sourceEnum.find((val) => val.value === e.target.value);
 
-            if (target) {
-              onChange(source.value, target);
+            if (!source) {
+              return;
+            }
+
+            if (source.type === 'clearable') {
+              setTargetValue('');
+              onChange(target?.value || '', source);
+            } else {
+              setTargetValue(e.target.value);
+              onChange(target?.value || '', source);
             }
           }}
         >
-          {targetEnum.map((e) => (
+          {sourceEnum.map((e) => (
             <MenuItem key={e.value} value={e.value}>
               {e?.label || e.value}
             </MenuItem>

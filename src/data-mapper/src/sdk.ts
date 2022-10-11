@@ -29,7 +29,7 @@ const generateEnum = (schema: any) => {
   return schemaEnum;
 };
 
-const getKeyByUiSchemaType = (uischema: any, type: string) => {
+export const getKeyByUiSchemaType = (uischema: any, type: string) => {
   let objectKey = null;
 
   Object.keys(dot.dot(uischema)).forEach((element) => {
@@ -56,7 +56,7 @@ export const createSchema = ({
   uischema: any;
   dataToTransform: any;
 }) => {
-  const dynamicObjectKey: any = getKeyByUiSchemaType(uischema, 'Dynamic');
+  const objectMapKey: any = getKeyByUiSchemaType(uischema, 'ObjectMap');
   const sourceTableKey: any = getKeyByUiSchemaType(uischema, 'SourceTable');
   const TransformedTableKey: any = getKeyByUiSchemaType(uischema, 'TransformedTable');
   const sourceEnum = generateEnum(source);
@@ -65,7 +65,7 @@ export const createSchema = ({
   const schema = {
     type: 'object',
     properties: {
-      [dynamicObjectKey]: {
+      [objectMapKey]: {
         type: 'array',
         items: {
           type: 'object',
@@ -74,7 +74,7 @@ export const createSchema = ({
             source: {
               type: 'object',
               title: source?.title,
-              enum: sourceEnum,
+              enum: [{ value: 'Clear Property', type: 'clearable' }, ...sourceEnum],
             },
             target: {
               type: 'object',
@@ -92,29 +92,32 @@ export const createSchema = ({
   return {
     schema: schema,
     data: {
-      [dynamicObjectKey]: sourceEnum.map((source: any) => ({ source })),
+      [objectMapKey]: targetEnum.map((target: any) => ({ target })),
       [sourceTableKey]: dataToTransform,
       [TransformedTableKey]: dataToTransform,
       baseKeys: {
-        dynamicObjectKey: dynamicObjectKey,
+        objectMapKey,
+        sourceTableKey,
+        TransformedTableKey,
       },
     },
   };
 };
 
 export const createRecipe = (data: any) => {
-  if (!data.baseKeys.dynamicObjectKey) {
+  if (!data.baseKeys.objectMapKey) {
     return;
   }
 
-  return data[data.baseKeys.dynamicObjectKey].reduce(
+  return data[data.baseKeys.objectMapKey].reduce(
     //@ts-ignore
     (acc, { source, target }) => {
-      if (!target?.value) {
+      if (!source?.value) {
         return acc;
       }
 
-      acc[source.value] = target.value;
+      acc[target.value] = source.value;
+
       return acc;
     },
     {}
@@ -123,7 +126,12 @@ export const createRecipe = (data: any) => {
 
 export const transformData = (data: any, sourceData: any) => {
   const recipe = createRecipe(data);
-  const transformedData = dot.transform(dot.dot(recipe), sourceData) as any;
+  const transformedData = Object.keys(recipe || []).reduce((acc: any, curr) => {
+    const sourceKey = recipe[curr];
+    const sourceValue = dot.pick(sourceKey, sourceData);
+    acc[curr] = sourceValue;
+    return acc;
+  }, {});
 
   return transformedData;
 };

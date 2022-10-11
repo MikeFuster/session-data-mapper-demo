@@ -1,5 +1,5 @@
 {
-  "name": "@fusebit-int/session-data-mapper",
+  "name": "@fusebit-int/objectmap-jsonforms",
   "private": true,
   "version": "1.0.0",
   "devDependencies": {

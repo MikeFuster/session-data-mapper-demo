@@ -10,11 +10,11 @@ const SourceTableVanillaRenderer = ({ data }: ControlProps) => {
   }, [data]);
 
   return (
-    <div style={{ width: '1100px', margin: '0 auto' }}>
+    <div>
       <Typography variant="h5" style={{ width: 'max-content', margin: '16px 0' }}>
         Source Data
       </Typography>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{ marginBottom: '16px' }}>
         <Table>
           <TableHead>
             <TableRow>

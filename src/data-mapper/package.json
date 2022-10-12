@@ -1,6 +1,6 @@
 {
-  "name": "@fusebit/session-data-mapper",
-  "version": "1.0.0",
+  "name": "session-data-mapper",
+  "version": "1.0.18",
   "description": "",
   "scripts": {
     "rollup": "rollup -c",

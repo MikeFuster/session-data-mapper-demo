@@ -109,7 +109,7 @@ export const createRecipe = (data: any) => {
     return;
   }
 
-  return data[data.baseKeys.objectMapKey].reduce(
+  return data?.[data.baseKeys.objectMapKey]?.reduce(
     //@ts-ignore
     (acc, { source, target }) => {
       if (!source?.value) {
@@ -125,13 +125,17 @@ export const createRecipe = (data: any) => {
 };
 
 export const transformData = (data: any, sourceData: any) => {
-  const recipe = createRecipe(data);
-  const transformedData = Object.keys(recipe || []).reduce((acc: any, curr) => {
-    const sourceKey = recipe[curr];
-    const sourceValue = dot.pick(sourceKey, sourceData);
-    acc[curr] = sourceValue;
-    return acc;
-  }, {});
+  try {
+    const recipe = createRecipe(data);
+    const transformedData = Object.keys(recipe || []).reduce((acc: any, curr) => {
+      const sourceKey = recipe[curr];
+      const sourceValue = dot.pick(sourceKey, sourceData);
+      acc[curr] = sourceValue;
+      return dot.object(acc);
+    }, {});
 
-  return transformedData;
+    return transformedData;
+  } catch (e) {
+    console.error(e);
+  }
 };
